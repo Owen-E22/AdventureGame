@@ -87,7 +87,7 @@ public class Hut extends Location{
 		
 		outputBox.setText("""
 				
-				
+				You wander around the Hut looking to see if anyone is inside
 				""");
 		
 		option1.setOnAction(e -> {
@@ -103,7 +103,8 @@ public class Hut extends Location{
 		
 	}
 	public void findKing() {
-		//yo
+		
+		//hello
 	}
 
 }
