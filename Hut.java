@@ -8,6 +8,13 @@ public class Hut extends Location{
 	private boolean beenToHut = false;
 	private boolean trained = false;
 
+	public void setBeenToHut(boolean beenToHut) {
+		this.beenToHut = beenToHut;
+	}
+	public void setTrained(boolean trained) {
+		this.trained = trained;
+	}
+
 	public boolean isBeenToHut() {
 		return beenToHut;
 	}

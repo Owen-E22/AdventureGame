@@ -16,6 +16,14 @@ public class Village extends Location{
 	private boolean hasStrangeBox = false;
 	private boolean hasVillageGold = false;
 	
+	public boolean isHasVillageGold() {
+		return hasVillageGold;
+	}
+
+	public void setHasVillageGold(boolean hasVillageGold) {
+		this.hasVillageGold = hasVillageGold;
+	}
+	
 	
 	public boolean isHasSword() {
 		return hasSword;

@@ -7,6 +7,9 @@ public class Tower extends Location{
 
 	
 	private boolean talkedToPrincess = false;
+	public void setTalkedToPrincess(boolean talkedToPrincess) {
+		this.talkedToPrincess = talkedToPrincess;
+	}
 	public boolean isTalkedToPrincess() {
 		return talkedToPrincess;
 	}

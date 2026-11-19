@@ -8,6 +8,14 @@ public class Forest extends Location {
 	private Main game;
 	private boolean hasFoundSteeringWheel = false;
 
+	public boolean isHasFoundSteeringWheel() {
+		return hasFoundSteeringWheel;
+	}
+
+	public void setHasFoundSteeringWheel(boolean hasFoundSteeringWheel) {
+		this.hasFoundSteeringWheel = hasFoundSteeringWheel;
+	}
+
 	public Forest(Main game) {
 		this.game = game;
 	}

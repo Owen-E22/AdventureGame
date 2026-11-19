@@ -4,6 +4,8 @@ import javafx.scene.control.TextField;
 import java.io.File;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,6 +37,7 @@ public class Main extends Application {
 	private Village village;
 	
 	private Location currentLocation;
+	private GameSave currentSave;   //save file for the game being played
 	
     @Override
     public void start(Stage primaryStage) {
@@ -75,6 +78,9 @@ public class Main extends Application {
                     "Created " + save.getGameName());
 
             
+            save.reset();  //new game starts with an empty save file
+            currentSave = save;
+
             runGame();  // Launch game 
         });
     }
@@ -148,6 +154,8 @@ public class Main extends Application {
 
                 saveStage.close();
 
+                currentSave = save;  //keep track of which save is loaded
+
                 runGame();  //run game here
             }
         });
@@ -173,6 +181,8 @@ public class Main extends Application {
     public void runGame() {
 
         createLocations();  //creates objects for locations
+        GameSave.setPlayerDead(false);
+        boolean restored = currentSave != null && currentSave.load(this);  //put saved location/items back (false if new game)
         
         Stage storyStage = new Stage();
 
@@ -224,6 +234,12 @@ public class Main extends Application {
         userChoices.setPrefHeight(60);
       
 
+        //autosave after every button press (runLater so it saves after the button's own action has finished)
+        Button[] allButtons = {northBtn, southBtn, eastBtn, westBtn, option1, option2, option3, option4};
+        for (Button b : allButtons) {
+            b.addEventHandler(ActionEvent.ACTION, e -> Platform.runLater(this::saveGame));
+        }
+
         // Place everything
         root.setTop(movementPane);
         root.setLeft(mapBox);
@@ -241,7 +257,9 @@ public class Main extends Application {
         storyStage.show();
 
 
-        currentLocation = startingLoc;
+        if (!restored) {
+            currentLocation = startingLoc;
+        }
         updateMap(mapBox);      //updates map layout
           
         
@@ -279,6 +297,11 @@ public class Main extends Application {
         
         outputBox.setStyle("-fx-font-style: italic;");
         
+        if (restored) {
+            resumeGame(outputBox, option1, option2, option3, option4);
+            return;
+        }
+
         startingLoc.instructions(outputBox, option1, option2, option3);
         
         option1.setOnAction(e -> {
@@ -293,6 +316,33 @@ public class Main extends Application {
     }
     
     
+    //saves the game to the current save file
+    public void saveGame() {
+        if (currentSave == null || currentLocation == null || GameSave.isPlayerDead()) {
+            return;
+        }
+        currentSave.save(this);
+    }
+
+    //shown after a save is loaded
+    private void resumeGame(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+        if (currentLocation == startingLoc && !startingLoc.hasBeenHere) {
+            startingLoc.story(outputBox, option1, option2, option3, option4);  //saved before leaving the start, replay the intro
+            return;
+        }
+
+        option1.setVisible(false);
+        option2.setVisible(false);
+        option3.setVisible(false);
+        option4.setVisible(false);
+
+        outputBox.setText("Welcome back, adventurer!\n\n"
+                + "Your progress has been restored.\n\n"
+                + "Location: " + GameSave.locationName(this) + "\n"
+                + "Items: " + GameSave.inventory(this) + "\n\n"
+                + "Choose a direction to travel");
+    }
+
     //current location getter and setter for location classes to use
     public Location getCurrentLocation() {
 		return currentLocation;
@@ -388,6 +438,10 @@ public class Main extends Application {
     	castle.setWest(cliff);
     }
 	
+	public Cliff getCliff() {
+		return cliff;
+	}
+
 	public Forest getForest() {
 		return forest;
 	}

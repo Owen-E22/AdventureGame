@@ -6,6 +6,10 @@ import javafx.scene.control.TextArea;
 public class Cave extends Location{
 
 	private boolean hasKey = false;
+
+	public void setHasKey(boolean hasKey) {
+		this.hasKey = hasKey;
+	}
 	private boolean hasReadLetters = false;
 	
 	
