@@ -62,112 +62,353 @@ public class Beach extends Location{
 	 * 		});
 	 * 
 	 
-	 */
+	 */ 
 	
 	
-	
-	@Override
-	public void story(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+
+@Override
+public void story(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    buttonReset(option1, option2, option3, option4);
+
+    if (!hasBeenHere) {
+        outputBox.setText("""
+                
+                You make your way down a narrow path until the trees
+                begin to clear.
+
+                Before you lies a vast beach stretching along the coastline.
+                Waves crash against the shore as the wind wailed and you notice the
+                salty smell of the ocean.
+
+                A dock extends out into the water.
+                At the end of it, you can see a boat.
+
+                You wonder what might lie beyond the coastline.
+
+                """);
+
+        hasBeenHere = true;
+    }
+    else {
+        outputBox.setText(""" 
+        		
+        		You return to the beach.
+                
+                The waves continue to crash against the shore.
+                The wooden dock and small boat remain where you left them.""");
+    }
+
+    option1.setText("Go to Dock");
+    option2.setText("Stroll Along Beach");
+    option3.setText("Go for a Swim");
+
+    option1.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        dock(outputBox, option1, option2, option3, option4);
+    });
+
+    option2.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        stroll(outputBox, option1, option2, option3, option4);
+    });
+
+    option3.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        goForASwim(outputBox, option1, option2, option3, option4);
+    });
+}
+
+
+public void dock(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    option1.setVisible(true);
+    option2.setVisible(true);
+    option3.setVisible(true);
+
+    outputBox.setText("""
+            
+            You walk out onto the wooden dock.
+            
+            The boards creak beneath your feet as the waves
+            gently rock a small boat tied to the dock.
+            
+            The boat looks old, but it might still be seaworthy.
+            
+            """);
+
+    option1.setText("Take Out Boat");
+    option2.setText("Go for a Swim");
+    option3.setText("Go Fishing");
+
+    option1.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        takeBoat(outputBox, option1, option2, option3, option4);
+    });
+
+    option2.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        goForASwim(outputBox, option1, option2, option3, option4);
+    });
+
+    option3.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        goFishing(outputBox, option1, option2, option3, option4);
+    });
+}
+
+}
+
 		
-		//The beach is where the King is able to be found once you get the steering wheel for the boat and the key to his prison
-		//The prison will be a cave on the cliff face that you have to use the boat to get too
-		//The player will learn this from other people around the map
-		
-		
-		//Some kind of intro to the beach 
-		//you see a dock
-		
-		
-		//Options:
-		
-		//Dock
-		//Stroll
-		//goForASwim
 	}
+
+	public void stroll(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    option1.setVisible(true);
+    option2.setVisible(false);
+    option3.setVisible(false);
+
+    outputBox.setText("""
+            
+            You decide to take a stroll along the beach.
+
+            The soft sand shifts beneath your feet as you walk
+            along the shoreline.
+
+            You find a few scattered shells and pieces of driftwood,
+            but nothing particularly interesting.
+
+            After a while, you decide to head back.
+
+            """);
+
+    option1.setText("Continue");
+
+    option1.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        story(outputBox, option1, option2, option3, option4);
+    });
+}
+
+	public void goForASwim(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    option1.setVisible(false);
+    option2.setVisible(false);
+    option3.setVisible(false);
+    option4.setVisible(false);
+
+    outputBox.setText("""
+            
+            You decide to take a swim in the ocean.
+
+            The cold water rushes around your body as you dive
+            beneath the waves.
+
+            You swim farther from shore, enjoying the peaceful
+            sound of the ocean.
+
+            Suddenly, a massive shadow passes beneath you.
+
+            Before you can react, a gigantic shark bursts through
+            the water with its jaws wide open!
+
+            You try desperately to swim away, but it is too late.
+
+            The last thing you see is a wall of teeth before
+            everything goes black.
+
+            """);
+
+    GameSave.death(outputBox, option1, option2, option3);
+}
+
 	
-	public void dock() {
-		//go out on dock 
-		//there is a boat
-			
-		
-		//Options:
-		
-		//take out boat
-		//goForASwim
-		//goFishing
-		
-		
-	}
-	public void stroll() {
-		//walk up and down the beach 
-		//nothing happens 
-		
-		//Options:
-		
-		//Continue - calls story() again to get other options again
-	}
-	public void goForASwim() {
-		//you dive in the water and get eaten by a shark or something
-		
-		//make it crazy
-		
-		//then call GameSave.death(parameters)
-	}
+
+	public void takeBoat(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    if (hasSteeringWheel) {
+        option1.setVisible(true);
+        option2.setVisible(true);
+        option3.setVisible(true);
+
+        outputBox.setText("""
+                
+                You climb into the small boat and inspect its controls.
+
+                With the steering wheel secured in place,
+                you are finally able to control the boat.
+
+                The open water stretches out before you.
+
+                """);
+
+        option1.setText("Sail North");
+        option2.setText("Sail South");
+        option3.setText("Exit Boat");
+
+        option1.setOnAction(e -> {
+            buttonReset(option1, option2, option3, option4);
+            sailNorth(outputBox, option1, option2, option3, option4);
+        });
+
+        option2.setOnAction(e -> {
+            buttonReset(option1, option2, option3, option4);
+            sailSouth(outputBox, option1, option2, option3, option4);
+        });
+
+        option3.setOnAction(e -> {
+            buttonReset(option1, option2, option3, option4);
+            dock(outputBox, option1, option2, option3, option4);
+        });
+    }
+    else {
+        option1.setVisible(true);
+        option2.setVisible(false);
+        option3.setVisible(false);
+
+        outputBox.setText("""
+                
+                You climb into the boat and attempt to steer it.
+
+                However, the steering wheel is missing!
+
+                Without it, you have no way of controlling the boat.
+                You will need to find a replacement before sailing.
+
+                """);
+
+        option1.setText("Return to Dock");
+
+        option1.setOnAction(e -> {
+            buttonReset(option1, option2, option3, option4);
+            dock(outputBox, option1, option2, option3, option4);
+        });
+    }
+}
+
+
+	public void goFishing(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    option1.setVisible(true);
+    option2.setVisible(false);
+    option3.setVisible(false);
+
+    outputBox.setText("""
+            
+            You find an old fishing rod resting against the dock.
+
+            You cast your line into the water and wait patiently.
+
+            """);
+
+    int chance = (int)(Math.random() * 6);
+
+    if (chance == 0) {
+        outputBox.appendText("""
+                
+                Suddenly, you feel a tug on the line!
+
+                You reel it in and discover that you caught a fish.
+
+                Hmm, I wonder if I can sell this somewhere?
+
+                """);
+    }
+    else {
+        outputBox.appendText("""
+                
+                You wait for what feels like forever.
+
+                Eventually, you pull your line back in.
+                Nothing but an empty hook.
+
+                Better luck next time.
+
+                """);
+    }
+
+    option1.setText("Return to Dock");
+
+    option1.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        dock(outputBox, option1, option2, option3, option4);
+    });
+}
+
 	
 	
-	public void takeBoat() {
-		//If(hasSteeringWheel){           use game.getBeach().setHasSteeringWheel(true) in forest to change to true
-			//you can take out the boat
-		//else
-			//cant take out boat  
-		
-		//Options:
-		
-		//sail North
-		//Sail South
-		//Exit Boat
-	}
-	public void goFishing() {
-		
-		//math.random to make it a 1 in 6 chance  or something to get fish
-		//use outputBox.appendText(); to say if you got a fish or not
-		//fish can be sold at sellShop in village (when a fish is caught just say in output "Hmm I wonder if I can sell this somewhere" or something like that)
-		
-		//Options:
-		
-		//call dock() again to reset player options
-	}
 	
+	public void sailNorth(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    option1.setVisible(true);
+    option2.setVisible(true);
+    option3.setVisible(false);
+
+    outputBox.setText("""
+
+            You steer the boat north along the coastline.
+
+            As you travel farther, you notice a steep cliff
+            rising above the water.
+
+            Near the base of the cliff, you spot a dark opening
+            that appears to lead into a cave.
+
+            Something about the entrance makes you curious.
+
+            """);
+
+    option1.setText("Return to Dock");
+    option2.setText("Investigate the Cave");
+
+    option1.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        returnToDock(outputBox, option1, option2, option3, option4);
+    });
+
+    option2.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        sailToCave(outputBox, option1, option2, option3, option4);
+    });
+}
+	public void sailSouth(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    option1.setVisible(true);
+    option2.setVisible(false);
+    option3.setVisible(false);
+
+    outputBox.setText("""
+
+            You steer the boat south along the coastline.
+
+            The shoreline stretches into the distance, but
+            there is nothing particularly interesting to see.
+
+            After a while, you decide to head back to the dock.
+
+            """);
+
+    option1.setText("Return to Dock");
+
+    option1.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        returnToDock(outputBox, option1, option2, option3, option4);
+    });
+}
 	
-	
-	public void sailNorth() {
-		//brief commentary about sailing
-		
-		//talk about seeing some kind of opening in the cliff face
-		
-		//if you have hideout key
-			//you can sailToCave()
-		
-		//Options:
-		
-		//returnToDock
-		//Maybe - sailToCave()
-	}
-	public void sailSouth() {
-		//brief commentary about sailing 
-		//nothing actually happens
-		//can make something fun up that happens
-		
-		//Options:
-		
-		//returnToDock
-	}
-	
-	public void returnToDock() {
-		//return to the dock
-		
-		//call dock() with "Continue" button
-	}
+	public void returnToDock(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+    option1.setVisible(true);
+    option2.setVisible(false);
+    option3.setVisible(false);
+
+    outputBox.setText("""
+
+            You guide the boat back toward the dock.
+
+            After tying it securely, you climb out and
+            step back onto the wooden boards.
+
+            """);
+
+    option1.setText("Continue");
+
+    option1.setOnAction(e -> {
+        buttonReset(option1, option2, option3, option4);
+        dock(outputBox, option1, option2, option3, option4);
+    });
+}
 	public void sailToCave() {
 		
 		
