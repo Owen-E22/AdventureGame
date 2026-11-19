@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 public class Beach extends Location{
 	
 	private boolean hasSteeringWheel = false;
+	private boolean hasKingSword = false;
 
 	public boolean isHasSteeringWheel() {
 		return hasSteeringWheel;
@@ -17,6 +18,14 @@ public class Beach extends Location{
 		this.hasSteeringWheel = hasSteeringWheel;
 	}
 
+	public boolean isHasKingSword() {
+	    return hasKingSword;
+	}
+
+	public void setHasKingSword(boolean hasKingSword) {
+	    this.hasKingSword = hasKingSword;
+	}
+	
 	private Main game;
 	public Beach(Main game) {
         this.game = game;
@@ -153,12 +162,7 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
         buttonReset(option1, option2, option3, option4);
         goFishing(outputBox, option1, option2, option3, option4);
     });
-}
-
-}
-
 		
-	}
 
 	public void stroll(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
     option1.setVisible(true);
@@ -185,7 +189,7 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
         buttonReset(option1, option2, option3, option4);
         story(outputBox, option1, option2, option3, option4);
     });
-}
+
 
 	public void goForASwim(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
     option1.setVisible(false);
@@ -216,7 +220,6 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
             """);
 
     GameSave.death(outputBox, option1, option2, option3);
-}
 
 	
 
@@ -408,26 +411,159 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
         buttonReset(option1, option2, option3, option4);
         dock(outputBox, option1, option2, option3, option4);
     });
+  //commentary about weaving around jagged rocks as you approach the opening
+  		//you step of boat and head into the darkness
+  		
+  		//you reach a strange door and use the key 
+  		//you see a man inside
+  		//you ask his name and he says its Aldric (the old king)
+  		//you say your hear to help him defeat Dark King
+  		//He says he is too out of shape from hiding and gives you his sword saying only you can do it
+  		
+  		//you take sword and return to boat
+  		
+  		
+  		//Options:
+  		
+  		//returnToDock
+  		
+  		//
 }
-	public void sailToCave() {
-		
-		
-		//commentary about weaving around jagged rocks as you approach the opening
-		//you step of boat and head into the darkness
-		
-		//you reach a strange door and use the key 
-		//you see a man inside
-		//you ask his name and he says its Aldric (the old king)
-		//you say your hear to help him defeat Dark King
-		//He says he is too out of shape from hiding and gives you his sword saying only you can do it
-		
-		//you take sword and return to boat
-		
-		
-		//Options:
-		
-		//returnToDock
-		
-		//
+	public void sailToCave(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+	    option1.setVisible(true);
+	    option2.setVisible(false);
+	    option3.setVisible(false);
+	    option4.setVisible(false);
+
+	    outputBox.setText("""
+
+	            You carefully guide the boat through the jagged rocks
+	            beneath the cliffs. You see an opening and sturdy rock
+	            to tie the boat to.
+
+	            After securing the boat, you climb onto the rocks
+	            and make your way into the cave.
+
+	            The cave is dark and quiet. As you travel deeper,
+	            you notice a faint light coming from a chamber ahead.
+
+	            The light is amplified by the moisture on the stalactites.
+
+	            Inside, you discover an old man waiting.
+
+	            His name is Aldric.
+
+	            """);
+
+	    option1.setText("Speak to Aldric");
+
+	    option1.setOnAction(e -> {
+	        outputBox.setText("""
+
+	                Aldric slowly rises from his seat, his eyes
+	                drifting toward an ancient stone pedestal.
+
+	                Resting upon it is a magnificent sword.
+	                Its blade gives off a faint, almost living glow.
+
+	                "I once sat upon the throne of this kingdom.
+	                I was its protector, its ruler, and its king."
+
+	                "But my reign came to an end when the Dark King
+	                rose against me."
+
+	                "I fought to protect everything I had built.
+	                Yet as the kingdom began to fall, so too did I."
+
+	                "Fear turned to anger. Anger turned to hatred.
+	                I became consumed by the very emotions I was
+	                supposed to have mastered."
+
+	                Aldric pauses, looking down at his hands.
+
+	                "The sword had always answered my call.
+	                But when I lost balance within myself,
+	                it no longer answered."
+
+	                """);
+
+	        option1.setText("Continue");
+
+	        option1.setOnAction(event -> {
+	            outputBox.setText("""
+
+	                    Aldric turns toward the sword.
+
+	                    "This blade is more than steel.
+	                    There is a force within it, something ancient
+	                    that cannot be commanded or controlled."
+
+	                    "It does not serve the strongest.
+	                    It does not serve the greatest ruler.
+	                    It answers those who possess balance,
+	                    courage, and the strength to overcome themselves."
+
+	                    "For years, I remained here, believing that
+	                    my failure had brought an end to its purpose."
+
+	                    "Then, one night, I felt it stir."
+
+	                    The sword begins to glow faintly.
+
+	                    "A presence. A calling. It showed me that
+	                    someone was coming. Someone worthy.
+	                    Someone it had chosen to carry it."
+
+	                    Aldric looks directly at you.
+
+	                    "I believe that someone is you."
+
+	                    He carefully lifts the sword from its pedestal.
+
+	                    "I have waited a long time for this moment.
+	                    Take it. Its journey with me is over."
+
+	                    """);
+
+	            option1.setText("Accept the King's Sword");
+
+	            option1.setOnAction(action -> {
+	                hasKingSword = true;
+
+	                outputBox.setText("""
+
+	                        You reach out and grasp the sword's hilt.
+
+	                        A brilliant light fills the chamber.
+	                        The blade hums in your hands, and for a
+	                        brief moment, you feel something stir within it.
+
+	                        It is as though the sword recognizes you.
+
+	                        Aldric watches in silence before finally speaking.
+
+	                        "It has chosen well."
+
+	                        "But do not make the mistake I made.
+	                        Strength without balance will destroy you."
+
+	                        "Seek the warrior who resides in the hut.
+	                        He can teach you to wield the blade.
+	                        But only you can learn to master yourself."
+
+	                        You thank Aldric and prepare to return
+	                        to your boat.
+
+	                        """);
+
+	                option1.setText("Return to Boat");
+
+	                option1.setOnAction(back -> {
+	                    buttonReset(option1, option2, option3, option4);
+	                    returnToDock(outputBox, option1, option2, option3, option4);
+	                });
+	            });
+	        });
+	    });
 	}
-}
+	
