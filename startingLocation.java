@@ -8,11 +8,15 @@ public class startingLocation extends Location{
 	
 	private boolean hasGold = false;
 	
-	
 	public startingLocation() {
 		
 		
-	}
+	} 
+	
+	private Main game;
+	public startingLocation(Main game) {
+        this.game = game;
+    }//make player go to castle no matter what
 	
 	
 	@Override
@@ -20,7 +24,7 @@ public class startingLocation extends Location{
 		buttonReset(option1, option2, option3, option4);
 		if(!hasBeenHere) {
 		option1.setVisible(true);
-		option2.setVisible(true);
+		option2.setVisible(false);
 		outputBox.setText("""
 			    You wake up finding yourself lying in soft grass.
 
@@ -39,11 +43,10 @@ public class startingLocation extends Location{
 			    Options:
 
 			    - Option1: Follow one of the four roads
-			    - Option2: Keep looking around
+			   
 			    """);
 		
 		option1.setText("Follow a Road");
-		option2.setText("Look Around");
 		option3.setVisible(false);
 		
 
@@ -51,12 +54,6 @@ public class startingLocation extends Location{
 			buttonReset(option1, option2, option3, option4);
 		    crossroads(outputBox, option1, option2, option3, option4);
 		});
-
-		option2.setOnAction(e -> {
-			buttonReset(option1, option2, option3, option4);
-		    lookAround(outputBox, option1, option2, option3, option4);
-		});
-		hasBeenHere = true;
 		}
 		else {
 			buttonReset(option1, option2, option3, option4);
@@ -71,39 +68,43 @@ public class startingLocation extends Location{
 	
 	
 	public void crossroads(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		if(!hasBeenHere) {
+		option1.setVisible(true);
+		option2.setVisible(false);
+		option3.setVisible(false);
 		
-		option1.setVisible(false);
-		option2.setVisible(false);
-		option3.setVisible(false);
+		option1.setText("Travel to Castle");
 		outputBox.setText("""
 				
-				Choose a direction to travel
+				You see on the map that there is a castle to the North
+				
+				"I bet if I go to the castle I can find out where I am and what this place is"
+				
+				You decide to head to the Castle to find some answers
+				
 				""");
-	}
-	
-	public void lookAround(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
-		outputBox.setText("""
-				
-				You search the area more carefully and find a small leather pouch lying in the grass
-				
-				You reach down to pick it up
-				
-				As you open it, you see gold coins glinting in the sunlight
-				
-				"Gold!" 
-				
-				"Hmmmm... I wonder where I can use this
-		    """);
-		setHasGold(true);
-		option1.setText("Continue");
-		option2.setVisible(false);
-		option3.setVisible(false);
+		hasBeenHere = true;
+		
 		option1.setOnAction(e -> {
-			crossroads(outputBox, option1, option2, option3, option4);
+			game.setCurrentLocation(game.getCastle());
+			
+			game.getCurrentLocation().story(outputBox, option1, option2, option3, option4);
+			game.updateMap(game.getMapBox());
 		});
+		}
+		else {
+			option1.setVisible(false);
+			option2.setVisible(false);
+			option3.setVisible(false);
+			outputBox.setText("""
+					
+					You reach the crossroads 
+					
+					Choose a direction to travel
+					
+					""");
+		}
 	}
-	
-	
 	
 	public void returned(TextArea outputBox) {
 		
@@ -115,6 +116,7 @@ public class startingLocation extends Location{
 				You reach the crossroads
 				
 				Choose a direction to travel
+				
 		    """);
 		
 	}

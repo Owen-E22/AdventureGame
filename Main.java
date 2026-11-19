@@ -311,16 +311,26 @@ public class Main extends Application {
 	public startingLocation getStart() {
 	    return startingLoc;
 	}
+	public Hut getHut() {
+	    return hut;
+	}
+	public Tower getTower() {
+	    return tower;
+	}
+	public Cave getCave() {
+	    return cave;
+	}
+
 
 	public void createLocations() {    //create location objects
-    	startingLoc = new startingLocation();
-    	beach = new Beach();
+    	startingLoc = new startingLocation(this);
+    	beach = new Beach(this);
     	castle = new Castle(this);
-    	cave = new Cave();
+    	cave = new Cave(this);
     	cliff = new Cliff();
-    	forest = new Forest();
-    	hut = new Hut();
-    	tower = new Tower();
+    	forest = new Forest(this);
+    	hut = new Hut(this);
+    	tower = new Tower(this);
     	village = new Village(this);
     	
     	//Starting location
@@ -378,6 +388,15 @@ public class Main extends Application {
     	castle.setWest(cliff);
     }
 	
+	public Forest getForest() {
+		return forest;
+	}
+
+	public Beach getBeach() {
+		return beach;
+	}
+
+
 	public TextArea getMapBox() {
     	return mapBox;
     }

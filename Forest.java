@@ -78,7 +78,11 @@ public class Forest extends Location {
 		//look around
 		//sit by fire pit
 
-		outputBox.setText(""" You follow the left path and reach a large clearing with a fire pit. There are several logs around the fire to sit on, and a large pile of wood sits off to one side.");
+		outputBox.setText(""" 
+				
+				You follow the left path and reach a large clearing with a fire pit. There are several logs around the fire to sit on, and a large pile of wood sits off to one side.
+				
+				""");
 
 		option1.setText("Look Around");
 		option2.setText("Sit by Fire Pit");

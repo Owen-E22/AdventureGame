@@ -5,6 +5,13 @@ import javafx.scene.control.TextArea;
 
 public class Castle extends Location{
 	
+	
+	
+	
+	//check button visibility
+	//Aldric in Beach will tell person to go to hut to train sword
+	
+	
 	private Main game;
 	public Castle(Main game) {
         this.game = game;
@@ -16,8 +23,6 @@ public class Castle extends Location{
 		return obeyDarkKing;
 	}
 
-
-
 	public void setObeyDarkKing(boolean obeyDarkKing) {
 		this.obeyDarkKing = obeyDarkKing;
 	}
@@ -27,8 +32,6 @@ public class Castle extends Location{
 	public boolean isHasLamb() {
 		return hasLamb;
 	}
-
-
 
 	public void setHasLamb(boolean hasLamb) {
 		this.hasLamb = hasLamb;
@@ -108,7 +111,7 @@ public class Castle extends Location{
 			else {
 				buttonReset(option1, option2, option3, option4);
 				//second time player has come to loc
-				returned(outputBox, option1, option2, option3);
+				returned(outputBox, option1, option2, option3, option4);
 				
 			}
 		
@@ -116,7 +119,7 @@ public class Castle extends Location{
 	
 	
 	public void diningRoom(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
-		
+		buttonReset(option1, option2, option3, option4);
 		option1.setVisible(true);
 		option2.setVisible(false);
 		option3.setVisible(false);
@@ -142,10 +145,12 @@ public class Castle extends Location{
 		
 		option1.setText("Continue");
 		option1.setOnAction(e -> {
+			buttonReset(option1, option2, option3, option4);
 			throne(outputBox, option1, option2, option3, option4);
 		});
 	}
 	public void dungeon(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		buttonReset(option1, option2, option3, option4);
 		option1.setVisible(true);
 		option2.setVisible(false);
 		option3.setVisible(false);
@@ -515,12 +520,295 @@ public class Castle extends Location{
 	
 	
 	//after you have been to location before
-	public void returned(TextArea outputBox, Button option1, Button option2, Button option3) {
+	public void returned(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		if(obeyDarkKing && !hasLamb) {
+			option1.setVisible(false);
+			option2.setVisible(false);
+			option3.setVisible(false);
+			
+			outputBox.setText("""
+					
+					You return to the castel without the lamb that The Dark King had requested
+					
+					"WHERE IS MY LAMB TRAVELER!"
+					
+					"I don't have one"
+					
+					"YOU DISSAPOINT ME"
+					
+					The Dark King waves his hand at the guard nearby
+					
+					The guard's sword slices through your neck like butter before you can even blink
+					
+					""");
+			
+			GameSave.death(outputBox, option1, option2, option3);
+			
+		}
+		else if(obeyDarkKing && hasLamb){
+			
+			option1.setVisible(false);
+			option2.setVisible(false);
+			option3.setVisible(false);
+			
+			outputBox.setText("""
+					
+					"I have brought you the lamb you requested"
+					
+					"SO YOU HAVE TRAVELER"
+					
+					"EXCELLENT WORK. YOU HAVE EARNED YOUR LIFE FOR NOW"
+					
+					You give a guard the lamb and leave quickly
+					
+					""");
+			
+			
+		}
+		else if(game.getVillage().isHasSword() || (game.getBeach().isHasKingsSword() && !game.getHut().isTrained())) {
+			option1.setVisible(false);
+			option2.setVisible(false);
+			option3.setVisible(false);
+			
+			outputBox.setText("""
+					
+					"YOU DARE BRING A WEAPON INTO MY CASTLE"
+					
+					"KILL THE TRAVELER"
+					
+					A guard approaches you
+					
+					You take out your sword thinking you will be able to defend yourself
+					
+					The guard swings hard and you barely manage to deflect his blow
+					
+					The blow brings you to your knees with it's force
+					
+					You manage to block one more swing before the guard makes it past your poor defense
+					
+					His sword slices your throat and you bleed out on the castle foor
+					
+					""");
+			GameSave.death(outputBox, option1, option2, option3);
+		}
+		else if(game.getBeach().isHasKingsSword() && game.getHut().isTrained()) {
+			//Game ending
+			
+			outputBox.setText("""
+					
+					Once The Dark King was deafeated, the rest of The Dark Crown were set free from their curse
+					
+					Their armour turned to dust and they turned into people of the Eldermere
+					
+					The whole kingdom is greatful for your help and bravery
+					
+					Aldric retakes the throne and brings peace once more to Eldermere
+					
+					He makes you a knight in his guard and you become a great warrior
+					
+					You end up marrying Aldric's daughter and have 3 wonderful children
+					
+					Once Aldric passes away you take the throne and keep the kingdom safe
+					
+					""");
+			
+			
+			
+		}
+		else {
+			outputBox.setText("""
+					
+					You enter the castle great room 
+					 
+				    - Option1: Go to the dining room
+				    - Option2: Go down into dungeon
+				    - Option3: Approch the throne
+				    
+					""");
+			
+			option1.setText("Dining room");
+			option2.setText("Dungeon");
+			option3.setText("Approach Throne");
+			
+			
+
+			option1.setOnAction(e -> {
+				buttonReset(option1, option2, option3, option4);
+			    //option1 button story
+				diningRoom(outputBox, option1, option2, option3, option4);
+			});
+
+			option2.setOnAction(e -> {
+				buttonReset(option1, option2, option3, option4);
+			    //option2 button story
+				dungeon(outputBox, option1, option2, option3, option4);
+			});
+			option3.setOnAction(e -> {
+				buttonReset(option1, option2, option3, option4);
+			    //option3 button story
+				throne(outputBox, option1, option2, option3, option4);
+			});
+		}
 		
 	}
 	
+	public void defeatTheDarkKing(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		option1.setVisible(true);
+		option2.setVisible(true);
+		option3.setVisible(true);
+		
+		option1.setText(null);
+		option2.setText(null);
+		option3.setText(null);
+		
+		outputBox.setText("""
+				
+				You re-enter the Castle and approach The Dark king
+				
+				"I SEE YOU HAVE COME BACK TRAVELER"
+				"WHY HAVE YOU RETURNED?"
+				
+				You come up with a plan to trick The Dark King
+				
+				
+				Options:
+				
+				- Propose a work contract
+				- Ask for his autograph
+				- Write a poem
+				
+				""");
+		
+		option1.setOnAction(e -> {
+			workContract(outputBox, option1, option2, option3, option4);
+		});
+		option2.setOnAction(e -> {
+			autograph(outputBox, option1, option2, option3, option4);
+		});
+		option3.setOnAction(e -> {
+			drawSketch(outputBox, option1, option2, option3, option4);
+		});
+		
+		
+	}
 	
+	public void workContract(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		
+		option1.setVisible(true);
+		option2.setVisible(false);
+		option3.setVisible(false);
+		
+		option1.setText("Continue");
+		
+		outputBox.setText("""
+				
+				You decide to propose a work contract between you and The Dark King
+				
+				"I would like to pledge my allegience to you and become your servant'
+				
+				You pull out a makeshift contract for you and The Dark King to sign
+				
+				"AH, VERY GOOD TRAVELER. BRING YOUR PAPER AND QUILL TO ME"
+				
+				You approach the throne with the quill gripped tightly in your hand
+				
+				You kneel at The Dark Kings feet pretending to sign the contract
+				
+				Before The Dark King has a chance to do anything, you tranform the quil into a sword
+				
+				You drive it up into his chest from your knee
+				
+				The Dark King falls before you and turns to dust
+				
+				""");
+		
+		option1.setOnAction(e -> {
+			victory(outputBox, option1, option2, option3, option4);
+		});
+		
+		
+	}
+	public void autograph(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		option1.setVisible(true);
+		option2.setVisible(false);
+		option3.setVisible(false);
+		
+		option1.setText("Continue");
+		
+		outputBox.setText("""
+				
+				You decide to ask The Dark King for his autograph
+				
+				"I was wondering if I could get your autograph your Highness?"
+				
+				"AH, AN ADMIRER I SEE. VERY WELL THEN COME OVER HERE AND I WILL SIGN YOUR FOREHEAD"
+				
+				You approach the throne, your quill gripped tightly in your hand
+				
+				Reaching the throne you hold out the quill towards The Dark King
+				
+				Before he can take it, you turn it into a sword
+				
+				The blade extends straight through The Dark Kings skull and he drops to the floor in dust
+				
+				""");
+		
+		option1.setOnAction(e -> {
+			victory(outputBox, option1, option2, option3, option4);
+		});
+	}
+	public void drawSketch(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		option1.setVisible(true);
+		option2.setVisible(false);
+		option3.setVisible(false);
+		
+		option1.setText("Continue");
+		
+		outputBox.setText("""
+				
+				You decide to draw a sketch of the king in order to get close ot him
+				
+				"I would like to draw a portrait of you to honor you"
+				
+				"AH, THAT WOULD BE MOST EXCELLENT"
+				"COME NEXT TO ME SO YOU CAN GET MY GOOD SIDE"
+				
+				You approach the throne and take out your quill
+				
+				"May I use my quill to get some measurements?"
+				
+				"YES YES OF COURSE"
+				
+				pretending to use your quill to measure his dimentions, you put it up to his face
+				
+				In one quick motion you turn it into a sword and slice The Dark Kings head off
+				
+				
+				
+				
+				""");
+		
+		option1.setOnAction(e -> {
+			victory(outputBox, option1, option2, option3, option4);
+		});
+	}
 	
+	//Beat the game
+	public void victory(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
+		
+		option1.setVisible(false);
+		option2.setVisible(false);
+		option3.setVisible(false);
+		
+		outputBox.setText("""
+				
+				
+				
+				""");
+		
+		
+		
+	}
 	
 
 }

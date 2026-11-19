@@ -7,6 +7,19 @@ public class Beach extends Location{
 	
 	private boolean hasSteeringWheel = false;
 	private boolean hasKingSword = false;
+	private boolean hasFish = false;
+
+	public void setHasFish(boolean hasFish) {
+		this.hasFish = hasFish;
+	}
+
+
+
+	public boolean isHasFish() {
+		return hasFish;
+	}
+
+
 
 	public boolean isHasSteeringWheel() {
 		return hasSteeringWheel;
@@ -18,11 +31,11 @@ public class Beach extends Location{
 		this.hasSteeringWheel = hasSteeringWheel;
 	}
 
-	public boolean isHasKingSword() {
+	public boolean isHasKingsSword() {
 	    return hasKingSword;
 	}
 
-	public void setHasKingSword(boolean hasKingSword) {
+	public void setHasKingsSword(boolean hasKingSword) {
 	    this.hasKingSword = hasKingSword;
 	}
 	
@@ -162,6 +175,7 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
         buttonReset(option1, option2, option3, option4);
         goFishing(outputBox, option1, option2, option3, option4);
     });
+}
 		
 
 	public void stroll(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
@@ -189,7 +203,7 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
         buttonReset(option1, option2, option3, option4);
         story(outputBox, option1, option2, option3, option4);
     });
-
+	}
 
 	public void goForASwim(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
     option1.setVisible(false);
@@ -220,6 +234,7 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
             """);
 
     GameSave.death(outputBox, option1, option2, option3);
+	}
 
 	
 
@@ -310,6 +325,7 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
                 Hmm, I wonder if I can sell this somewhere?
 
                 """);
+        hasFish = true;
     }
     else {
         outputBox.appendText("""
@@ -353,19 +369,39 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
             Something about the entrance makes you curious.
 
             """);
+    if(game.getCave().isHasKey() && game.getVillage().isHasStrangeBox()) {
+    	option1.setText("Return to Dock");
 
+
+        option1.setOnAction(e -> {
+            buttonReset(option1, option2, option3, option4);
+            returnToDock(outputBox, option1, option2, option3, option4);
+        });
+    	option2.setText("Investigate the Cave");
+    	
+    	option2.setOnAction(e -> {
+            buttonReset(option1, option2, option3, option4);
+            sailToCave(outputBox, option1, option2, option3, option4);
+        });
+    }
+    else {
+    	outputBox.appendText("""
+    			
+    			"I should get some more information about that cave"
+    			
+    			"I wonder who I could ask about that?"
+    			
+    			""");
+
+    			
     option1.setText("Return to Dock");
-    option2.setText("Investigate the Cave");
+
 
     option1.setOnAction(e -> {
         buttonReset(option1, option2, option3, option4);
         returnToDock(outputBox, option1, option2, option3, option4);
     });
-
-    option2.setOnAction(e -> {
-        buttonReset(option1, option2, option3, option4);
-        sailToCave(outputBox, option1, option2, option3, option4);
-    });
+    }
 }
 	public void sailSouth(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
     option1.setVisible(true);
@@ -566,4 +602,5 @@ public void dock(TextArea outputBox, Button option1, Button option2, Button opti
 	        });
 	    });
 	}
+}
 	

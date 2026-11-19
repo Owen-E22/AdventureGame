@@ -14,6 +14,7 @@ public class Village extends Location{
 	private boolean hasBeenHere = false;
 	private boolean hasSword = false;
 	private boolean hasStrangeBox = false;
+	private boolean hasVillageGold = false;
 	
 	
 	public boolean isHasSword() {
@@ -84,6 +85,10 @@ public class Village extends Location{
 		
 		outputBox.setText("""
 				
+				You enter the village square
+				
+				You see a shop to sell items and a shop to buy items
+				
 				""");
 		
 		option1.setOnAction(e -> {
@@ -102,18 +107,29 @@ public class Village extends Location{
 	
 	public void getLamb(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
 		if(game.getCastle().isObeyDarkKing()) {
-			//getting lamb for feast urgent
+			outputBox.setText("""
+					
+					"I am in need of a Lamb for The Dark King's feast"
+					"Please may I take a lamb"
+					
+					Shopkeeper: "If The Dark King himself demands a lamb then you must take one"
+					"You better hurry, best not to upset him"
+					
+					You take the lamb
+					
+					""");
 			
 			game.getCastle().setHasLamb(true);
 		}
 		else {
-			if(game.getStart().isHasGold()) {
+			if(hasVillageGold) {
 				outputBox.appendText("""
 						
 						Shopkeeper: "Here is a lamb"
 						"Should be pretty tasty"
 						
 						""");
+				hasVillageGold = false;
 				game.getCastle().setHasLamb(true);
 			}
 			else {
@@ -125,8 +141,44 @@ public class Village extends Location{
 	}
 	
 	public void sellShop(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
-		//if you sell some item you can find in the cave you can get gold
-		//or maybe if you sell a certain item the shopkeeper will help you with something?
+
+		option1.setVisible(true);
+		option2.setVisible(false);
+		option3.setVisible(false);
+		option1.setText("Exit sell shop");
+		
+		outputBox.setText("""
+				
+				Shopkeeper: "Hey there!"
+				"I would love to buy some fish from you!"
+				"You can fish for them at the beach"
+				
+				""");
+		if(game.getBeach().isHasFish()) {  //fish variable in beach
+			option2.setVisible(true);
+			option2.setText("Sell fish");
+			
+			
+			option2.setOnAction(e -> {
+				game.getBeach().setHasFish(false);
+				hasVillageGold = true;
+				outputBox.appendText("""
+						
+						Shopkeeper: "Thanks for the fish!"
+						"Here is one gold"
+						
+						You have gained one gold
+						
+						""");
+			});
+		}
+		
+		option1.setOnAction(e -> {
+			villageSquare(outputBox, option1, option2, option3, option4);
+		});
+
+		
+		
 	}
 	public void buyShop(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
 		
@@ -157,15 +209,18 @@ public class Village extends Location{
 				""");
 		
 		
-		if(game.getStart().isHasGold()) {  //add another location you can get gold from
-		option1.setOnAction(e -> {
-			boughtItem = "Sword";
-			purchaseItem(outputBox, option1, option2, option3, option4, boughtItem);
-		});
-		option2.setOnAction(e -> {
-			boughtItem = "StrangeBox";
-			purchaseItem(outputBox, option1, option2, option3, option4, boughtItem);
-		});
+		if(hasVillageGold) {
+			option1.setOnAction(e -> {
+				boughtItem = "Sword";
+				purchaseItem(outputBox, option1, option2, option3, option4, boughtItem);
+				hasVillageGold = false;
+			});
+			option2.setOnAction(e -> {
+				boughtItem = "StrangeBox";
+				purchaseItem(outputBox, option1, option2, option3, option4, boughtItem);
+				hasVillageGold = false;
+			});
+		
 		}
 		else {
 			option1.setOnAction(e -> {
@@ -206,6 +261,7 @@ public class Village extends Location{
 					"Not sure what you want with it but here you go!"
 					
 					""");
+			game.getCave().readLetters(outputBox, option1, option2, option3, option4);
 		}
 		
 		
@@ -234,6 +290,7 @@ public class Village extends Location{
 				Shopkeeper: "Fight back! You are a funny man"
 				"We would be squashed like bugs under thier boots"
 				"Maybe if King Aldric wasn't dead we would have a chance"
+				"You know strange traveler, if you go to the old Hut just North of here, the man who lives there might be able to answer more of your questions
 				
 				
 				""");
