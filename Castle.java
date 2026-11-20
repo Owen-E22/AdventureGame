@@ -18,6 +18,7 @@ public class Castle extends Location{
     }
 	
 	boolean obeyDarkKing = false;
+	boolean giveLamb = false;
 	
 	public boolean isObeyDarkKing() {
 		return obeyDarkKing;
@@ -37,7 +38,12 @@ public class Castle extends Location{
 		this.hasLamb = hasLamb;
 	}
 
-
+	public boolean isGiveLamb() { 
+		return giveLamb; 
+	}
+	public void setGiveLamb(boolean giveLamb) { 
+		this.giveLamb = giveLamb;
+	}
 
 	public Castle() {
 		
@@ -50,7 +56,7 @@ public class Castle extends Location{
 	public void story(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
 		buttonReset(option1, option2, option3, option4);
 		if(!hasBeenHere) {
-			
+			buttonReset(option1, option2, option3, option4);
 			outputBox.setText("""
 				    
 				   The gates towering above you as you aproach the enormous castle
@@ -521,12 +527,13 @@ public class Castle extends Location{
 	
 	//after you have been to location before
 	public void returned(TextArea outputBox, Button option1, Button option2, Button option3, Button option4) {
-		if(obeyDarkKing && !hasLamb) {
-			option1.setVisible(false);
-			option2.setVisible(false);
-			option3.setVisible(false);
+		if(obeyDarkKing && !giveLamb) {
+			if(!hasLamb) {
+				option1.setVisible(false);
+				option2.setVisible(false);
+				option3.setVisible(false);
 			
-			outputBox.setText("""
+				outputBox.setText("""
 					
 					You return to the castel without the lamb that The Dark King had requested
 					
@@ -542,16 +549,16 @@ public class Castle extends Location{
 					
 					""");
 			
-			GameSave.death(outputBox, option1, option2, option3);
+				GameSave.death(outputBox, option1, option2, option3);
+				giveLamb = true;
+			}
+			else{
 			
-		}
-		else if(obeyDarkKing && hasLamb){
+				option1.setVisible(false);
+				option2.setVisible(false);
+				option3.setVisible(false);
 			
-			option1.setVisible(false);
-			option2.setVisible(false);
-			option3.setVisible(false);
-			
-			outputBox.setText("""
+				outputBox.setText("""
 					
 					"I have brought you the lamb you requested"
 					
@@ -563,7 +570,8 @@ public class Castle extends Location{
 					
 					""");
 			
-			
+				giveLamb = true;
+			}
 		}
 		else if(game.getVillage().isHasSword() || (game.getBeach().isHasKingsSword() && !game.getHut().isTrained())) {
 			option1.setVisible(false);
@@ -593,26 +601,7 @@ public class Castle extends Location{
 		}
 		else if(game.getBeach().isHasKingsSword() && game.getHut().isTrained()) {
 			//Game ending
-			
-			outputBox.setText("""
-					
-					Once The Dark King was deafeated, the rest of The Dark Crown were set free from their curse
-					
-					Their armour turned to dust and they turned into people of the Eldermere
-					
-					The whole kingdom is greatful for your help and bravery
-					
-					Aldric retakes the throne and brings peace once more to Eldermere
-					
-					He makes you a knight in his guard and you become a great warrior
-					
-					You end up marrying Aldric's daughter and have 3 wonderful children
-					
-					Once Aldric passes away you take the throne and keep the kingdom safe
-					
-					""");
-			
-			
+			defeatTheDarkKing(outputBox, option1, option2, option3, option4);
 			
 		}
 		else {
@@ -657,9 +646,9 @@ public class Castle extends Location{
 		option2.setVisible(true);
 		option3.setVisible(true);
 		
-		option1.setText(null);
-		option2.setText(null);
-		option3.setText(null);
+		option1.setText("Propose a work contract");
+		option2.setText("Ask for his autograph");
+		option3.setText("Draw a sketch");
 		
 		outputBox.setText("""
 				
@@ -801,10 +790,24 @@ public class Castle extends Location{
 		option3.setVisible(false);
 		
 		outputBox.setText("""
-				
-				
-				
-				""");
+
+		        Once The Dark King was deafeated, the rest of The Dark Crown were set free from their curse
+
+		        Their armour turned to dust and they turned into people of the Eldermere
+
+		        The whole kingdom is greatful for your help and bravery
+
+		        Aldric retakes the throne and brings peace once more to Eldermere
+
+		        He makes you a knight in his guard and you become a great warrior
+
+		        You end up marrying Aldric's daughter and have 3 wonderful children
+
+		        Once Aldric passes away you take the throne and keep the kingdom safe
+
+		        THE END
+
+		        """);
 		
 		
 		

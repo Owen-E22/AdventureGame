@@ -297,6 +297,7 @@ public class Hut extends Location{
 				You are now ready to take this kingdom back for the people, King Aldric, and your freedom
 				
 				""");
+		trained = true;
 		}
 		else {
 			
