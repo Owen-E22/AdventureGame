@@ -664,7 +664,7 @@ public class Castle extends Location{
 				
 				- Propose a work contract
 				- Ask for his autograph
-				- Write a poem
+				- Draw a sketch
 				
 				""");
 		
